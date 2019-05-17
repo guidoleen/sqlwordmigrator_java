@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public class StringReplacement 
 {
+	private static int ibegindef = 0;
 	private static int tellr = 1; 
 	private Matcher m;
 	private Pattern p;
@@ -90,7 +91,13 @@ public class StringReplacement
 			{
 				strRepl = strRepl.replace(";", _endrepl);
 				if(_pattern.contentEquals(SqlWordConstants.BEGIN_DEF))
+				{
+					if(this.ibegindef == 0)
+						strRepl = SqlWordConstants.TAG_CURSOR_BEGIN + "\n" +
+						SqlWordConstants.COMMENT + "\n" + strRepl;
+					this.ibegindef++;
 					tellr++;
+				}
 			}
 			return strRepl;
 		}

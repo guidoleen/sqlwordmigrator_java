@@ -15,12 +15,16 @@ public class ParameterConvertor
 	public String getParameters() 
 	{
 		String strReturn = "";
+		String strOnlyParam = "";
 		for (int i = 0; i < this.parameters.size(); i++) 
 		{
 			strReturn += this.parameters.get(i).toString();
 			strReturn += "\n";
+			
+			strOnlyParam += this.parameters.get(i).toStringParam();
+			// strOnlyParam += "\n";
 		}
-		return strReturn;
+		return strReturn + strOnlyParam;
 	}
 	
 	public void parameterConvert(ArrayList<String> _arrL) // ArrayList lines of text from ReadTextFile
@@ -31,6 +35,9 @@ public class ParameterConvertor
 		Matcher mDatatype;
 		Matcher mLov;
 		SqlWordParameter sqlParm = new SqlWordParameter("");
+		
+		String strLov = "";
+		boolean isLov = false;
 		
 		for (int i = 0; i < _arrL.size(); i++) 
 		{
@@ -55,10 +62,18 @@ public class ParameterConvertor
 			}
 			if(mLov.find())
 			{
-				sqlParm.setLov(mLov.replaceFirst(""));
+				strLov = mLov.replaceFirst("");
+				isLov = true;
+			}
+			if(isLov)
+			{
+				strLov += _arrL.get(i);
 			}
 			if(mEnd.find())
 			{
+				sqlParm.setLov(strLov);
+				isLov = false;
+				strLov = "";
 				this.parameters.add(sqlParm);
 				i++;
 			}

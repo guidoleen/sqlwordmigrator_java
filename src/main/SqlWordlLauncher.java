@@ -10,7 +10,9 @@ public class SqlWordlLauncher {
 	{
 		String strfIn = "input.txt";
 		String strfOut = "output.txt";
-		String dirName = ""; // "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\arbv01.txt";
+		String dirName = "";
+		// String dirName = "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\"; // TESTING...
+
 		if( args.length > 0 )
 			dirName = args[0];
 	

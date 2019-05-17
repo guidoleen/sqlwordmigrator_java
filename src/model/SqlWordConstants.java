@@ -17,9 +17,11 @@ public class SqlWordConstants
 	// Converted values
 	public static final String TAG_END_LOOP = "<%end loop;%>";
 	public static final String TAG_BEGIN_EXPRSN = "<%=";
-	public static final String TAG_BEGIN_PARAM = "<% plsql parameter=";
+	public static final String TAG_BEGIN_PARAM = "<%@ plsql parameter=";
 	public static final String TAG_BEGIN = "<%";
+	public static final String TAG_CURSOR_BEGIN = "<%!";
 	public static final String TAG_END = "%>";
+	public static final String COMMENT = "--";
 	
 	// Parameters
 	public static final String BEGIN_PARAM = "\\bbeginparam:\\b";

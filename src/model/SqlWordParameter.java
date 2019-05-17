@@ -56,6 +56,12 @@ public class SqlWordParameter
 
 	}
 	
+	// Just parameters together
+	public String toStringParam()
+	{
+		return this.getNewParameter().replace("\r", "").replace("\n", "") + "\n";
+	}
+	
 	// <%@ plsql parameter="p_reden" type="number"%>
 	private String getNewParameter()
 	{
