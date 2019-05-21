@@ -38,6 +38,7 @@ public class ParameterConvertor
 		
 		String strLov = "";
 		boolean isLov = false;
+		int iLov = 0; // Index the first lov line
 		
 		for (int i = 0; i < _arrL.size(); i++) 
 		{
@@ -60,20 +61,32 @@ public class ParameterConvertor
 			{
 				sqlParm.setDataType(mDatatype.replaceFirst(""));
 			}
-			if(mLov.find())
+			if(mLov.find()) // First line of lov // Add return_value and display_value
 			{
-				strLov = mLov.replaceFirst("");
+				strLov = this.strAddReturnValue( mLov.replaceFirst("") ); // First line of lov // Put the extra value
+				iLov = 1; // Set the first line index
 				isLov = true;
 			}
-			if(isLov)
+			if(isLov) // Add the lines to the LOV param part > _arrL.get(i)
 			{
-				strLov += _arrL.get(i);
+				if(iLov == 1) // Ignore the first line
+				{
+					iLov = 0;
+				}
+				else
+					strLov += _arrL.get(i);				
 			}
 			if(mEnd.find())
 			{
+				// Set Lov in the parm object
 				sqlParm.setLov(strLov);
+				
+				// Init the flag vars
 				isLov = false;
 				strLov = "";
+				iLov = 0;
+				
+				// Add to the parameters list
 				this.parameters.add(sqlParm);
 				i++;
 			}
@@ -88,4 +101,36 @@ public class ParameterConvertor
 			
 			return this.m;
 		}
+		
+	// Add Extra vals to the lov first line
+	private String strAddReturnValue(String _input)
+	{
+		String output = "";
+		int iIndx = 0;
+		int iTelr = 0;
+		char[] cinput = _input.toCharArray();
+		for (int i = 0; i < cinput.length; i++) 
+		{
+			if(cinput[i] == ',')
+			{
+				output += " return_value ,";
+				iIndx = 1;
+				i++;
+			}
+			if( iIndx == 1 )
+			{
+				if(cinput[i] == '\'')
+				{
+					iTelr++;
+				}
+				if(iTelr == 2)
+				{
+					output += "' display_value \n";
+					break;
+				}
+			}
+			output += cinput[i];
+		}
+		return output;
+	}
 }

@@ -11,7 +11,7 @@ public class SqlWordlLauncher {
 		String strfIn = "input.txt";
 		String strfOut = "output.txt";
 		String dirName = "";
-		// String dirName = "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\"; // TESTING...
+		// dirName = "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\"; // TESTING...
 
 		if( args.length > 0 )
 			dirName = args[0];
@@ -31,6 +31,8 @@ public class SqlWordlLauncher {
 			strOutParam = pcnv.getParameters();
 			
 			fw.writetoFile(strOutDefault + strOutParam, dirName + strfOut);
+			
+			System.out.println(strOutParam); // For dev purpose only
 		}
 		catch (IOException e) 
 		{
