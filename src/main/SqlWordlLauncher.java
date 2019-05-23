@@ -11,10 +11,10 @@ public class SqlWordlLauncher {
 		String strfIn = "input.txt";
 		String strfOut = "output.txt";
 		String dirName = "";
-		// dirName = "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\"; // TESTING...
+		dirName = "C:\\Users\\guido_leen\\Desktop\\OmzetingJava\\"; // TESTING...
 
-		if( args.length > 0 )
-			dirName = args[0];
+//		if( args.length > 0 )
+//			dirName = args[0];
 	
 		ReadTxtFile rdr = new ReadTxtFile();
 		WriteTxtFile fw = new WriteTxtFile();

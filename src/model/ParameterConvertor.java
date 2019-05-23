@@ -39,7 +39,7 @@ public class ParameterConvertor
 		String strLov = "";
 		boolean isLov = false;
 		int iLov = 0; // Index the first lov line
-		
+
 		for (int i = 0; i < _arrL.size(); i++) 
 		{
 			mBegin = this.getMatcher(_arrL.get(i), SqlWordConstants.BEGIN_PARAM);
@@ -94,14 +94,27 @@ public class ParameterConvertor
 	}
 	
 	// Return a matcher
-		private Matcher getMatcher(String _inLine, String _pattern)
-		{
-			this.p = Pattern.compile(_pattern);
-			this.m = this.p.matcher( _inLine.toLowerCase() );
-			
-			return this.m;
-		}
+	private Matcher getMatcher(String _inLine, String _pattern)
+	{
+		this.p = Pattern.compile(_pattern);
+		this.m = this.p.matcher( this.deleteWhiteSpaces( _inLine.toLowerCase() ) );
+				
+		return this.m;
+	}
+	// Delete whitespaces begin and end string
+	private String deleteWhiteSpaces(String _strIn)
+	{
+		String result = "";
+		char[] cIn = _strIn.toCharArray();
 		
+		for (int i = 0; i < cIn.length; i++) 
+		{
+			if(cIn[i] != ' ')
+				result += cIn[i];
+		}
+		return result;
+	}
+	
 	// Add Extra vals to the lov first line
 	private String strAddReturnValue(String _input)
 	{
