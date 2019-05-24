@@ -39,6 +39,7 @@ public class ParameterConvertor
 		String strLov = "";
 		boolean isLov = false;
 		int iLov = 0; // Index the first lov line
+		String strSetPrompt = "";
 
 		for (int i = 0; i < _arrL.size(); i++) 
 		{
@@ -47,7 +48,7 @@ public class ParameterConvertor
 			mPrompt = this.getMatcher(_arrL.get(i), SqlWordConstants.PROMPT);
 			mDatatype = this.getMatcher(_arrL.get(i), SqlWordConstants.DATATYPE);
 			mLov = this.getMatcher(_arrL.get(i), SqlWordConstants.LOV);
-			
+						
 			if(mBegin.find())
 			{
 				sqlParm = new SqlWordParameter("");
@@ -55,7 +56,11 @@ public class ParameterConvertor
 			}
 			if(mPrompt.find())
 			{
-				sqlParm.setPrompt(mPrompt.replaceFirst("").replace(":", ""));
+				strSetPrompt = _arrL.get(i).toLowerCase();
+				strSetPrompt = strSetPrompt.replaceAll(SqlWordConstants.PROMPT, "");
+				strSetPrompt = strSetPrompt.substring(0, 1).toUpperCase() + strSetPrompt.substring(1);
+				
+				sqlParm.setPrompt( strSetPrompt.replace(":", "") ); // mPrompt.replaceFirst("").replace(":", ""));
 			}
 			if(mDatatype.find())
 			{
@@ -88,7 +93,7 @@ public class ParameterConvertor
 				
 				// Add to the parameters list
 				this.parameters.add(sqlParm);
-				i++;
+				// i++;
 			}
 		}
 	}
