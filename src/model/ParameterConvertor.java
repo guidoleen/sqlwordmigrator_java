@@ -36,17 +36,18 @@ public class ParameterConvertor
 		Matcher mLov;
 		SqlWordParameter sqlParm = new SqlWordParameter("");
 		
-		String strLov = "";
 		boolean isLov = false;
 		int iLov = 0; // Index the first lov line
 		String strSetPrompt = "";
+		String strDatatype = "";
+		String strLov = "";
 
 		for (int i = 0; i < _arrL.size(); i++) 
 		{
 			mBegin = this.getMatcher(_arrL.get(i), SqlWordConstants.BEGIN_PARAM);
 			mEnd = this.getMatcher(_arrL.get(i), SqlWordConstants.END_PARAM);
 			mPrompt = this.getMatcher(_arrL.get(i), SqlWordConstants.PROMPT);
-			mDatatype = this.getMatcher(_arrL.get(i), SqlWordConstants.DATATYPE);
+			mDatatype = this.getMatcher( this.deleteAllWhiteSpaces(_arrL.get(i)), SqlWordConstants.DATATYPE );
 			mLov = this.getMatcher(_arrL.get(i), SqlWordConstants.LOV);
 						
 			if(mBegin.find())
@@ -98,7 +99,7 @@ public class ParameterConvertor
 		}
 	}
 	
-	// Return a matcher
+	// Return a matcher without whitespaces
 	private Matcher getMatcher(String _inLine, String _pattern)
 	{
 		this.p = Pattern.compile(_pattern);
@@ -106,16 +107,41 @@ public class ParameterConvertor
 				
 		return this.m;
 	}
-	// Delete whitespaces begin and end string
+	
+	// Delete whitespaces begin and end string > For the LOV's
 	private String deleteWhiteSpaces(String _strIn)
 	{
+		int iTel = 0;
 		String result = "";
 		char[] cIn = _strIn.toCharArray();
 		
 		for (int i = 0; i < cIn.length; i++) 
 		{
-			if(cIn[i] != ' ')
-				result += cIn[i];
+			if(cIn[i] == ' ' && iTel == 0)
+			{
+				i++;
+			}
+			iTel++;
+			
+			result += cIn[i];
+		}
+		return result;
+	}
+	
+	// Delete all whitespaces > for the datatypes
+	private String deleteAllWhiteSpaces(String _strIn)
+	{
+		String result = "";
+		char[] cIn = _strIn.toCharArray();
+
+		for (int i = 0; i < cIn.length; i++) 
+		{
+			if(cIn[i] == ' ')
+			{
+				i++;
+			}
+
+			result += cIn[i];
 		}
 		return result;
 	}
@@ -129,13 +155,13 @@ public class ParameterConvertor
 		char[] cinput = _input.toCharArray();
 		for (int i = 0; i < cinput.length; i++) 
 		{
-			if(cinput[i] == ',')
+			if(cinput[i] == ',' && iIndx == 0 ) // Only the first line // and first part
 			{
 				output += " return_value ,";
 				iIndx = 1;
 				i++;
 			}
-			if( iIndx == 1 )
+			if( iIndx == 1 ) // Second part after the line
 			{
 				if(cinput[i] == '\'')
 				{
@@ -144,11 +170,34 @@ public class ParameterConvertor
 				if(iTelr == 2)
 				{
 					output += "' display_value \n";
-					break;
+					iIndx++;
+					i++;
+					// break;
 				}
 			}
 			output += cinput[i];
 		}
 		return output;
 	}
+	
+	// Check if char is number
+	private boolean checkIfNumber(String strIn)
+	{
+		try
+		{
+			Integer.parseInt(strIn);
+		}
+		catch(NumberFormatException ee)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	// Change the first number with ''
+//	private String changeWithSingleQuotes(strLine)
+//	{
+//		checkIfNumber(String strIn);
+//	}
 }

@@ -25,14 +25,22 @@ public class SqlWordlLauncher {
 			// String str =  rdr.getArrList(); // For parameters
 			String strOutDefault = rdr.getTxtConvertedToStringLines(dirName + strfIn, new ConvertToSqlWord11() );
 			String strOutParam = "";
+			String strOutCursor = "";
 			
+			// Parameter conversion
 			ParameterConvertor pcnv = new ParameterConvertor();
 			pcnv.parameterConvert(rdr.getArrList());
 			strOutParam = pcnv.getParameters();
 			
-			fw.writetoFile(strOutDefault + strOutParam, dirName + strfOut);
+			// Cursor conversion
+			CursorConvertor cconv = new CursorConvertor();
+			cconv.cursorConvert(rdr.getArrList());
+			strOutCursor = cconv.getCursors();
+			
+			fw.writetoFile(strOutParam + strOutCursor, dirName + strfOut); // strOutDefault
 			
 			System.out.println(strOutParam); // For dev purpose only
+			System.out.println(strOutCursor); // For dev purpose only
 		}
 		catch (IOException e) 
 		{

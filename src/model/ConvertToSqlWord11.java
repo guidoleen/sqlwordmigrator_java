@@ -7,7 +7,7 @@ public class ConvertToSqlWord11 implements IConvertor
 	@Override
 	public String convertfromstring(String _str) 
 	{
-		return this.strrepl.replace(_str);
+		return _str; // this.strrepl.replace(_str);
 	}
 
 	@Override
