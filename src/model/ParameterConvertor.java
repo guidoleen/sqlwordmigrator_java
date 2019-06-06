@@ -12,19 +12,32 @@ public class ParameterConvertor
 
 	private List<SqlWordParameter> parameters = new ArrayList();
 	
-	public String getParameters() 
+	// Parameters with attributes based on sql query 
+	// Insert into SQLWORD_REPORT_PARAMETER (PROCEDURE_NAME,PARAMETER_NAME,PROMPT,DESCRIPTION,LOV) values ('VERG02','P_ADMIN_NR'      ,'Klant id'                    ,null,null);
+	public String getParametersAttributes()
 	{
 		String strReturn = "";
+		for (int i = 0; i < this.parameters.size(); i++) 
+		{
+			strReturn += "Insert into SQLWORD_REPORT_PARAMETER (PROCEDURE_NAME,PARAMETER_NAME,PROMPT,DESCRIPTION,LOV) values ('DOCNAME','";
+			strReturn += SqlWordConstants.PARAM_PREFIX + this.parameters.get(i).getParameterName();
+			strReturn += "', '";
+			strReturn += this.parameters.get(i).getPrompt();
+			strReturn += "', null, null);";
+			strReturn += "\n";
+		}
+		return strReturn + "\n";
+	}
+	
+	// The real Parameters
+	public String getParameters()
+	{
 		String strOnlyParam = "";
 		for (int i = 0; i < this.parameters.size(); i++) 
 		{
-			strReturn += this.parameters.get(i).toString();
-			strReturn += "\n";
-			
 			strOnlyParam += this.parameters.get(i).toStringParam();
-			// strOnlyParam += "\n";
 		}
-		return strReturn + strOnlyParam;
+		return strOnlyParam;
 	}
 	
 	public void parameterConvert(ArrayList<String> _arrL) // ArrayList lines of text from ReadTextFile
